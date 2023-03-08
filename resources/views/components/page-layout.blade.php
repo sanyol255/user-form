@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
-<body class="text-center mt-3   ">
+<body class="text-center mt-3">
     {{ $slot }}
 </body>
 </html>

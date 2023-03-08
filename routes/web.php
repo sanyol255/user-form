@@ -15,3 +15,4 @@ use App\Http\Controllers\UserFormController;
 */
 
 Route::get('/', [UserFormController::class, 'index'])->name('user-form');
+Route::post('/', [UserFormController::class, 'save'])->name('save-user');
