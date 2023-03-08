@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Models\UserForm;
-//use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 class UserFormController extends Controller
 {
@@ -19,16 +20,20 @@ class UserFormController extends Controller
         $user = $request->all('firstname', 'lastname', 'email', 'password');
 
         $user['password'] = Hash::make($user['password']);
-//        $user = [
-//            'firstname' => $request->firstname,
-//            'lastname' => $request->lastname,
-//            'email' => $request->email,
-//            'password' => Hash::make($request->password)
-//        ];
+
+        $userData = '';
 
         UserForm::create($user);
-//        Storage::disk('public')->put('filetest.txt', 'Your content here');
+        foreach ($user as $fieldData) {
+            $userData .= $fieldData . ',';
+        }
+        Storage::disk('local')->append('users.csv', $userData);
 
-        return redirect('/')->with('success', 'Користувач успішно збереженний');
+        return redirect('/user-created')->with('success', 'Користувач успішно збереженний');
+    }
+
+    public function createdUser()
+    {
+        return view('user-created');
     }
 }
