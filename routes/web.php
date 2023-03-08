@@ -15,3 +15,7 @@ use App\Http\Controllers\UserFormController;
 */
 
 Route::get('/', [UserFormController::class, 'index'])->name('user-form');
+Route::post('/', [UserFormController::class, 'save'])->name('save-user');
+
+Route::get('/user-created', [UserFormController::class, 'createdUser'])->name('user-created');
+
