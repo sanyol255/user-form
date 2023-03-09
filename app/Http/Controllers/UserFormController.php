@@ -6,7 +6,8 @@ use App\Http\Requests\UserFormRequest;
 use App\Models\UserForm;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\File;;
+use Illuminate\Support\Facades\Log;
+use App\Helpers\Constants;
 
 class UserFormController extends Controller
 {
@@ -21,8 +22,11 @@ class UserFormController extends Controller
 
         $user['password'] = Hash::make($user['password']);
 
+        $userInfo = 'ім\'я: ' . $user['firstname'] . ' ' . $user['lastname'] . ' email: ' . $user['email'];
+
         if ($this->duplicatedEmail($user['email'])) {
-            return redirect('/user-duplicated')->with('failed', 'Користувач з такою email адресою уже існує!');
+            Log::channel('registration')->critical(Constants::FAILED_REGISTRATION . $userInfo);
+            return redirect('/user-duplicated')->with('failed', Constants::FAILED_MESSAGE);
         } else {
             UserForm::create($user);
 
@@ -34,9 +38,9 @@ class UserFormController extends Controller
 
             Storage::disk('local')->append('users.csv', $userData);
 
-            return redirect('/user-created')->with('success', 'Користувач успішно збереженний');
+            Log::channel('registration')->info(Constants::SUCCESS_REGISTRATION . $userInfo);
+            return redirect('/user-created')->with('success', Constants::SUCCESS_MESSAGE);
         }
-
     }
 
     public function createdUser()
