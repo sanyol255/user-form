@@ -18,4 +18,5 @@ Route::get('/', [UserFormController::class, 'index'])->name('user-form');
 Route::post('/', [UserFormController::class, 'save'])->name('save-user');
 
 Route::get('/user-created', [UserFormController::class, 'createdUser'])->name('user-created');
+Route::get('/user-duplicated', [UserFormController::class, 'duplicatedUser'])->name('user-duplicated');
 
